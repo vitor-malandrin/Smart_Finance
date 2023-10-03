@@ -104,7 +104,3 @@ for file in os.listdir(dir_path):
     if file.endswith(".csv"):
         file_path = os.path.join(dir_path, file)
         test_for_file(file_path)
-
-# SVR horrível
-# random forest e gradient são os dois piores
-# linear, ridge e lasso praticamente idênticas, os melhores
