@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -70,29 +71,39 @@ def test_all_models():
     ridge_test()
     lasso_test()
 
-dataframe = pd.read_csv(r'crypto data\Binance_BTCBRL_d.csv')
+def test_for_file(file_path):
+    dataframe = pd.read_csv(file_path)
 
-x = dataframe[['Open', 'High', 'Low']]
-y = dataframe['Close']
+    x = dataframe[['Open', 'High', 'Low']]
+    y = dataframe['Close']
 
-train_x, test_x, train_y, test_y = train_test_split(x, y, test_size=0.25)
+    global train_x, test_x, train_y, test_y
+    train_x, test_x, train_y, test_y = train_test_split(x, y, test_size=0.25)
 
-test_all_models()
-print()
+    print(f"Testing for file: {file_path}")
+    test_all_models()
+    print()
 
-aux_dataframe = pd.DataFrame()
-aux_dataframe['Open'] = test_x['Open']
-aux_dataframe['High'] = test_x['High']
-aux_dataframe['Low'] = test_x['Low']
-aux_dataframe['test_y (Close)'] = test_y
-aux_dataframe['Linear Regression'] = linear_regression_prediction
-aux_dataframe['Random Forest'] = random_forest_prediction
-aux_dataframe['SVR'] = svr_prediction
-aux_dataframe['Gradient Boost'] = gradient_boost_prediction
-aux_dataframe['Ridge'] = ridge_prediction
-aux_dataframe['Lasso'] = lasso_prediction
+    aux_dataframe = pd.DataFrame()
+    aux_dataframe['Open'] = test_x['Open']
+    aux_dataframe['High'] = test_x['High']
+    aux_dataframe['Low'] = test_x['Low']
+    aux_dataframe['test_y (Close)'] = test_y
 
-print(aux_dataframe)
+    aux_dataframe['Random Forest'] = random_forest_prediction
+    aux_dataframe['SVR'] = svr_prediction
+    aux_dataframe['Gradient Boost'] = gradient_boost_prediction
+    aux_dataframe['Linear Regression'] = linear_regression_prediction
+    aux_dataframe['Ridge'] = ridge_prediction
+    aux_dataframe['Lasso'] = lasso_prediction
+    print(aux_dataframe)
+    print("------------------------------------------------------")
+
+dir_path = 'crypto data'
+for file in os.listdir(dir_path):
+    if file.endswith(".csv"):
+        file_path = os.path.join(dir_path, file)
+        test_for_file(file_path)
 
 # SVR horrível
 # random forest e gradient são os dois piores
