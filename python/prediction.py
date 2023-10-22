@@ -93,6 +93,7 @@ crypto_symbols = ['ADA', 'AXS', 'BNB', 'BTC',
         
 def predict_for_all_symbols():
     symbols = get_symbols()
+    recommendations = {}    
     for symbol in symbols:
         print(f'\nAtivo: {symbol}...')
         train_x, test_x, train_y, test_y = prepare_data(symbol)
@@ -101,9 +102,9 @@ def predict_for_all_symbols():
         valid_models = [model for model, score in scores.items() if score > 0 and maes[model] < 10]
         valid_predictions = {model: predictions[model] for model in valid_models}
         decision_ensemble = ensemble_decision(valid_predictions, scores, test_y)
-
         print(f'Recomendação da Smart Finance para {symbol}BRL: {decision_ensemble}\n')
+        recommendations[symbol] = decision_ensemble
+    return recommendations
 
 if __name__ == "__main__":
     predict_for_all_symbols()
-
